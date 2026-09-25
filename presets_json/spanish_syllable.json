@@ -1,0 +1,948 @@
+{
+  "name": "SpanishSyllableBasedPhonemizer",
+  "tag": "ES SYL",
+  "author": "Lotte V",
+  "version": "1.0.0",
+  "language_code": "ES",
+  "description": "Official OpenUtau Spanish Syllable-Based Phonemizer by Lotte V. Supports CVVC, VCV, seseo, eñe fallbacks, and consonant clusters.",
+  "namespace": "OpenUtau.Plugin.Builtin",
+  "base_class_type": "SyllableBased",
+  "openutau_plugins_dir": "/Users/victor/OpenUtau/Plugins",
+  "output_dll_name": "SpanishSyllableBasedPhonemizer.dll",
+  "vowels": [
+    {
+      "symbol": "a",
+      "ipa": "a",
+      "aliases": [
+        "á"
+      ],
+      "is_nasal": false,
+      "is_diphthong": false,
+      "is_triphthong": false,
+      "second_vowel": null,
+      "third_vowel": null,
+      "diphthong_split_ratio": 0.65,
+      "end_glide": "a -",
+      "glottal_start_alias": null,
+      "elongation_symbol": null,
+      "stress_variants": [],
+      "color_overrides": []
+    },
+    {
+      "symbol": "e",
+      "ipa": "e",
+      "aliases": [
+        "é"
+      ],
+      "is_nasal": false,
+      "is_diphthong": false,
+      "is_triphthong": false,
+      "second_vowel": null,
+      "third_vowel": null,
+      "diphthong_split_ratio": 0.65,
+      "end_glide": "e -",
+      "glottal_start_alias": null,
+      "elongation_symbol": null,
+      "stress_variants": [],
+      "color_overrides": []
+    },
+    {
+      "symbol": "i",
+      "ipa": "i",
+      "aliases": [
+        "í",
+        "y"
+      ],
+      "is_nasal": false,
+      "is_diphthong": false,
+      "is_triphthong": false,
+      "second_vowel": null,
+      "third_vowel": null,
+      "diphthong_split_ratio": 0.65,
+      "end_glide": "i -",
+      "glottal_start_alias": null,
+      "elongation_symbol": null,
+      "stress_variants": [],
+      "color_overrides": []
+    },
+    {
+      "symbol": "o",
+      "ipa": "o",
+      "aliases": [
+        "ó"
+      ],
+      "is_nasal": false,
+      "is_diphthong": false,
+      "is_triphthong": false,
+      "second_vowel": null,
+      "third_vowel": null,
+      "diphthong_split_ratio": 0.65,
+      "end_glide": "o -",
+      "glottal_start_alias": null,
+      "elongation_symbol": null,
+      "stress_variants": [],
+      "color_overrides": []
+    },
+    {
+      "symbol": "u",
+      "ipa": "u",
+      "aliases": [
+        "ú",
+        "ü"
+      ],
+      "is_nasal": false,
+      "is_diphthong": false,
+      "is_triphthong": false,
+      "second_vowel": null,
+      "third_vowel": null,
+      "diphthong_split_ratio": 0.65,
+      "end_glide": "u -",
+      "glottal_start_alias": null,
+      "elongation_symbol": null,
+      "stress_variants": [],
+      "color_overrides": []
+    }
+  ],
+  "consonants": [
+    {
+      "symbol": "b",
+      "ipa": "b",
+      "aliases": [],
+      "consonant_type": "Stop",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": false,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": false,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    },
+    {
+      "symbol": "ch",
+      "ipa": "ch",
+      "aliases": [],
+      "consonant_type": "Affricate",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": false,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": false,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    },
+    {
+      "symbol": "d",
+      "ipa": "d",
+      "aliases": [],
+      "consonant_type": "Stop",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": false,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": false,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    },
+    {
+      "symbol": "dz",
+      "ipa": "dz",
+      "aliases": [],
+      "consonant_type": "Affricate",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": false,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": false,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    },
+    {
+      "symbol": "f",
+      "ipa": "f",
+      "aliases": [],
+      "consonant_type": "Fricative",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": false,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": false,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    },
+    {
+      "symbol": "g",
+      "ipa": "g",
+      "aliases": [],
+      "consonant_type": "Stop",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": false,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": false,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    },
+    {
+      "symbol": "h",
+      "ipa": "h",
+      "aliases": [],
+      "consonant_type": "Fricative",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": false,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": false,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    },
+    {
+      "symbol": "hh",
+      "ipa": "hh",
+      "aliases": [],
+      "consonant_type": "Fricative",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": false,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": false,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    },
+    {
+      "symbol": "j",
+      "ipa": "j",
+      "aliases": [],
+      "consonant_type": "Fricative",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": false,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": false,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    },
+    {
+      "symbol": "k",
+      "ipa": "k",
+      "aliases": [],
+      "consonant_type": "Stop",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": false,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": false,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    },
+    {
+      "symbol": "l",
+      "ipa": "l",
+      "aliases": [],
+      "consonant_type": "Liquid",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": true,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": false,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    },
+    {
+      "symbol": "ll",
+      "ipa": "ll",
+      "aliases": [],
+      "consonant_type": "Liquid",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": true,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": false,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    },
+    {
+      "symbol": "m",
+      "ipa": "m",
+      "aliases": [],
+      "consonant_type": "Nasal",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": true,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": false,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    },
+    {
+      "symbol": "n",
+      "ipa": "n",
+      "aliases": [],
+      "consonant_type": "Nasal",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": true,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": false,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    },
+    {
+      "symbol": "nh",
+      "ipa": "nh",
+      "aliases": [],
+      "consonant_type": "Nasal",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": true,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": false,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    },
+    {
+      "symbol": "p",
+      "ipa": "p",
+      "aliases": [],
+      "consonant_type": "Stop",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": false,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": false,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    },
+    {
+      "symbol": "r",
+      "ipa": "r",
+      "aliases": [],
+      "consonant_type": "Liquid",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": true,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": false,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    },
+    {
+      "symbol": "rr",
+      "ipa": "rr",
+      "aliases": [],
+      "consonant_type": "Liquid",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": true,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": false,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    },
+    {
+      "symbol": "s",
+      "ipa": "s",
+      "aliases": [],
+      "consonant_type": "Fricative",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": false,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": false,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    },
+    {
+      "symbol": "sh",
+      "ipa": "sh",
+      "aliases": [],
+      "consonant_type": "Fricative",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": false,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": false,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    },
+    {
+      "symbol": "t",
+      "ipa": "t",
+      "aliases": [],
+      "consonant_type": "Stop",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": false,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": false,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    },
+    {
+      "symbol": "ts",
+      "ipa": "ts",
+      "aliases": [],
+      "consonant_type": "Affricate",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": false,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": false,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    },
+    {
+      "symbol": "w",
+      "ipa": "w",
+      "aliases": [],
+      "consonant_type": "Semivowel",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": true,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": false,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    },
+    {
+      "symbol": "y",
+      "ipa": "y",
+      "aliases": [],
+      "consonant_type": "Semivowel",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": true,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": false,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    },
+    {
+      "symbol": "z",
+      "ipa": "z",
+      "aliases": [],
+      "consonant_type": "Fricative",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": false,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": false,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    },
+    {
+      "symbol": "zz",
+      "ipa": "zz",
+      "aliases": [],
+      "consonant_type": "Fricative",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": false,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": false,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    },
+    {
+      "symbol": "zh",
+      "ipa": "zh",
+      "aliases": [],
+      "consonant_type": "Fricative",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": false,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": false,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    },
+    {
+      "symbol": "I",
+      "ipa": "I",
+      "aliases": [],
+      "consonant_type": "Semivowel",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": true,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": false,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    },
+    {
+      "symbol": "U",
+      "ipa": "U",
+      "aliases": [],
+      "consonant_type": "Semivowel",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": true,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": false,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    }
+  ],
+  "onset_clusters": [
+    {
+      "cluster": "bl",
+      "components": [
+        "b",
+        "l"
+      ],
+      "is_onset": true,
+      "split_timing_percentages": [
+        50.0,
+        50.0
+      ],
+      "bpm_shortening_threshold": 160,
+      "allow_elision_if_fast": false,
+      "custom_oto_alias": null
+    },
+    {
+      "cluster": "br",
+      "components": [
+        "b",
+        "r"
+      ],
+      "is_onset": true,
+      "split_timing_percentages": [
+        50.0,
+        50.0
+      ],
+      "bpm_shortening_threshold": 160,
+      "allow_elision_if_fast": false,
+      "custom_oto_alias": null
+    },
+    {
+      "cluster": "dr",
+      "components": [
+        "d",
+        "r"
+      ],
+      "is_onset": true,
+      "split_timing_percentages": [
+        50.0,
+        50.0
+      ],
+      "bpm_shortening_threshold": 160,
+      "allow_elision_if_fast": false,
+      "custom_oto_alias": null
+    },
+    {
+      "cluster": "fl",
+      "components": [
+        "f",
+        "l"
+      ],
+      "is_onset": true,
+      "split_timing_percentages": [
+        50.0,
+        50.0
+      ],
+      "bpm_shortening_threshold": 160,
+      "allow_elision_if_fast": false,
+      "custom_oto_alias": null
+    },
+    {
+      "cluster": "fr",
+      "components": [
+        "f",
+        "r"
+      ],
+      "is_onset": true,
+      "split_timing_percentages": [
+        50.0,
+        50.0
+      ],
+      "bpm_shortening_threshold": 160,
+      "allow_elision_if_fast": false,
+      "custom_oto_alias": null
+    },
+    {
+      "cluster": "gl",
+      "components": [
+        "g",
+        "l"
+      ],
+      "is_onset": true,
+      "split_timing_percentages": [
+        50.0,
+        50.0
+      ],
+      "bpm_shortening_threshold": 160,
+      "allow_elision_if_fast": false,
+      "custom_oto_alias": null
+    },
+    {
+      "cluster": "gr",
+      "components": [
+        "g",
+        "r"
+      ],
+      "is_onset": true,
+      "split_timing_percentages": [
+        50.0,
+        50.0
+      ],
+      "bpm_shortening_threshold": 160,
+      "allow_elision_if_fast": false,
+      "custom_oto_alias": null
+    },
+    {
+      "cluster": "kl",
+      "components": [
+        "k",
+        "l"
+      ],
+      "is_onset": true,
+      "split_timing_percentages": [
+        50.0,
+        50.0
+      ],
+      "bpm_shortening_threshold": 160,
+      "allow_elision_if_fast": false,
+      "custom_oto_alias": null
+    },
+    {
+      "cluster": "kr",
+      "components": [
+        "k",
+        "r"
+      ],
+      "is_onset": true,
+      "split_timing_percentages": [
+        50.0,
+        50.0
+      ],
+      "bpm_shortening_threshold": 160,
+      "allow_elision_if_fast": false,
+      "custom_oto_alias": null
+    },
+    {
+      "cluster": "pl",
+      "components": [
+        "p",
+        "l"
+      ],
+      "is_onset": true,
+      "split_timing_percentages": [
+        50.0,
+        50.0
+      ],
+      "bpm_shortening_threshold": 160,
+      "allow_elision_if_fast": false,
+      "custom_oto_alias": null
+    },
+    {
+      "cluster": "pr",
+      "components": [
+        "p",
+        "r"
+      ],
+      "is_onset": true,
+      "split_timing_percentages": [
+        50.0,
+        50.0
+      ],
+      "bpm_shortening_threshold": 160,
+      "allow_elision_if_fast": false,
+      "custom_oto_alias": null
+    },
+    {
+      "cluster": "tr",
+      "components": [
+        "t",
+        "r"
+      ],
+      "is_onset": true,
+      "split_timing_percentages": [
+        50.0,
+        50.0
+      ],
+      "bpm_shortening_threshold": 160,
+      "allow_elision_if_fast": false,
+      "custom_oto_alias": null
+    }
+  ],
+  "coda_clusters": [],
+  "pattern_rules": [
+    {
+      "pattern_type": "RestingStartVowel",
+      "template": "- {vowel}",
+      "enabled": true,
+      "priority": 10,
+      "fallback_template": "{vowel}",
+      "min_pitch_note": null,
+      "max_pitch_note": null,
+      "color_filter": null
+    },
+    {
+      "pattern_type": "RestingStartConsonant",
+      "template": "- {consonant}{vowel}",
+      "enabled": true,
+      "priority": 10,
+      "fallback_template": "{consonant}{vowel}",
+      "min_pitch_note": null,
+      "max_pitch_note": null,
+      "color_filter": null
+    },
+    {
+      "pattern_type": "VCV",
+      "template": "{prev_vowel} {consonant}{vowel}",
+      "enabled": true,
+      "priority": 9,
+      "fallback_template": "{consonant}{vowel}",
+      "min_pitch_note": null,
+      "max_pitch_note": null,
+      "color_filter": null
+    },
+    {
+      "pattern_type": "CV",
+      "template": "{consonant}{vowel}",
+      "enabled": true,
+      "priority": 8,
+      "fallback_template": null,
+      "min_pitch_note": null,
+      "max_pitch_note": null,
+      "color_filter": null
+    },
+    {
+      "pattern_type": "VC",
+      "template": "{prev_vowel} {consonant}",
+      "enabled": true,
+      "priority": 7,
+      "fallback_template": null,
+      "min_pitch_note": null,
+      "max_pitch_note": null,
+      "color_filter": null
+    },
+    {
+      "pattern_type": "VV",
+      "template": "{prev_vowel} {vowel}",
+      "enabled": true,
+      "priority": 6,
+      "fallback_template": "{vowel}",
+      "min_pitch_note": null,
+      "max_pitch_note": null,
+      "color_filter": null
+    },
+    {
+      "pattern_type": "EndingVowelGlide",
+      "template": "{vowel} -",
+      "enabled": true,
+      "priority": 5,
+      "fallback_template": null,
+      "min_pitch_note": null,
+      "max_pitch_note": null,
+      "color_filter": null
+    }
+  ],
+  "voice_color_and_pitch": {
+    "use_pitch_suffixes": true,
+    "pitch_suffixes": [
+      "_C3",
+      "_F3",
+      "_A3",
+      "_C4",
+      "_E4",
+      "_G4",
+      "_C5"
+    ],
+    "voice_colors": [
+      "",
+      "Power",
+      "Soft",
+      "Whisper",
+      "Falsetto",
+      "Clear"
+    ],
+    "fallback_to_default_color": true,
+    "auto_color_prefix_suffix": false,
+    "color_separator": "_",
+    "custom_resampler_flags": "",
+    "pitch_shift_steps": [
+      0,
+      12,
+      -12,
+      24,
+      -24
+    ]
+  },
+  "syllabification_config": {
+    "enable_cross_word_liaison": true,
+    "word_boundary_rest_threshold_ticks": 60,
+    "auto_detect_diphthongs": true,
+    "syllable_separator_chars": [
+      ".",
+      "-",
+      "_",
+      " "
+    ],
+    "allow_glottal_stop_insertion": true
+  },
+  "dictionary_overrides": [],
+  "regex_rules": [
+    {
+      "name": "gn -> nh",
+      "pattern": "gn",
+      "replacement": "nh",
+      "enabled": true,
+      "order": 1
+    },
+    {
+      "name": "ll -> j",
+      "pattern": "ll",
+      "replacement": "j",
+      "enabled": true,
+      "order": 2
+    },
+    {
+      "name": "x -> h",
+      "pattern": "x",
+      "replacement": "h",
+      "enabled": true,
+      "order": 3
+    },
+    {
+      "name": "seseo z -> s",
+      "pattern": "z",
+      "replacement": "s",
+      "enabled": true,
+      "order": 4
+    }
+  ],
+  "allow_fallback_cv": true,
+  "allow_fallback_vv": true,
+  "split_ratio_onset": 0.5,
+  "split_ratio_coda": 0.5,
+  "max_consonant_duration_ms": 120,
+  "raw_csharp_source": "using System;\nusing System.Collections.Generic;\nusing OpenUtau.Api;\nusing OpenUtau.Core.G2p;\nusing System.Linq;\nusing Serilog;\nusing System.IO;\n\nnamespace OpenUtau.Plugin.Builtin {\n /// <summary>\n /// Spanish syllable-based phonemizer.\n /// I tried to make this phonemizer as compatible with many different methods as possible.\n /// Supports both CVVC and VCV if the voicebank has it.\n /// Supports seseo (\"s\" instead of \"z\" if the voicebank doesn't have the latter).\n /// It also substitutes \"nh\" for \"ny\" if the voicebank doesn't have the first.\n /// Ít now also uses \"i\" instead of \"y\" and \"u\" instead of \"w\" depending on what the voicebank supports.\n /// Now with full VCV support, including \"consonant VCV\" if the voicebank has either of them (ex. \"l ba\", \"n da\" but also \"m bra\" etc.).\n /// </summary>\n [Phonemizer(\"Spanish Syllable-Based Phonemizer\", \"ES SYL\", \"Lotte V\", language: \"ES\")]\n public class SpanishSyllableBasedPhonemizer : SyllableBasedPhonemizer {\n\n private readonly string[] vowels = \"a,e,i,o,u\".Split(',');\n private readonly string[] consonants = \"b,ch,d,dz,f,g,h,hh,j,k,l,ll,m,n,nh,p,r,rr,s,sh,t,ts,w,y,z,zz,zh,I,U\".Split(',');\n private readonly Dictionary<string, string> dictionaryReplacements = (\"a=a;e=e;i=i;o=o;u=u;\" + \"b=b;ch=ch;d=d;f=f;g=g;gn=nh;k=k;l=l;ll=j;m=m;n=n;p=p;r=r;rr=rr;s=s;t=t;w=w;x=h;y=y;z=z;I=I;U=U;B=b;D=d;G=g;Y=y\").Split(';')\n .Select(entry => entry.Split('='))\n .Where(parts => parts.Length == 2)\n .Where(parts => parts[0] != parts[1])\n .ToDictionary(parts => parts[0], parts => parts[1]);\n\n private readonly string[] longConsonants = \"ch,dz,h,s,sh,k,p,rr,t,ts,z\".Split(',');\n private readonly string[] initialCC = \"bl,bly,blw,br,bry,brw,by,bw,dr,dry,drw,dy,dw,fl,fly,flw,fr,fry,frw,fy,fw,gl,gly,glw,gr,gry,grw,gy,gw,kl,kly,klw,kr,kry,krw,ky,kw,pl,ply,plw,pr,pry,prw,py,pw,tl,tly,tlw,tr,try,trw,ty,tw,chy,chw,hy,hw,jy,jw,ly,lw,my,mw,ny,nw,ry,rw,sy,sw,vy,vw,zy,zw,nhy,nhw,rry,rrw,ts\".Split(',');\n private readonly string[] notClusters = \"dz,hh,ll,nh,sh,zz,zh,th,ng\".Split(',');\n private readonly string[] burstConsonants = \"ch,dz,j,k,p,t,ts,r\".Split(',');\n\n // For banks with a seseo accent\n private readonly Dictionary<string, string> seseo = \"z=s\".Split(';')\n .Select(entry => entry.Split('='))\n .Where(parts => parts.Length == 2)\n .Where(parts => parts[0] != parts[1])\n .ToDictionary(parts => parts[0], parts => parts[1]);\n\n private bool isSeseo = false;\n\n // For banks with alternate semivowel aliases\n private readonly Dictionary<string, string> semiVowelFallback = \"jya=ja;jye=je;jyo=jo;jyu=ju;chya=cha;chye=che;chyo=cho;chyu=chu;nhya=nha;nhye=nhe;nhyo=nho;nhyu=nhu;nhwa=nua;nhwe=nue;nhwi=nui;nhwo=nuo;ya=ia;ye=ie;yo=io;yu=iu;wa=ua;we=ue;wi=ui;wo=uo\".Split(';')\n .Select(entry => entry.Split('='))\n .Where(parts => parts.Length == 2)\n .Where(parts => parts[0] != parts[1])\n .ToDictionary(parts => parts[0], parts => parts[1]);\n\n private bool isSemiVowelFallback = false;\n\n // For banks with alternate alias for \"ñ\"\n private readonly Dictionary<string, string> eñeFallback = \"nhya=nya;nhye=nye;nhyo=nyo;nhyu=nyu;nhwa=nwa;nhwe=nwe;nhwi=nwi;nhwo=nwo;nha=nya;nhe=nye;nyi=ni;nhi=nyi;nho=nyo;nhu=nyu;a nh=a n;e nh=e n;i nh=i n;o nh=o n;u nh=u n;n nh=n n;l nh=l n;m nh=m n\".Split(';')\n .Select(entry => entry.Split('='))\n .Where(parts => parts.Length == 2)\n .Where(parts => parts[0] != parts[1])\n .ToDictionary(parts => parts[0], parts => parts[1]);\n\n private bool isEñeFallback = false;\n\n protected override string[] GetVowels() => vowels;\n protected override string[] GetConsonants() => consonants;\n protected override string GetDictionaryName() => \"cmudict_es.txt\";\n\n protected override IG2p LoadBaseDictionary() {\n var g2ps = new List<IG2p>();\n\n // Load dictionary from singer folder.\n if (singer != null && singer.Found && singer.Loaded) {\n string file = Path.Combine(singer.Location, \"es-syl.yaml\");\n if (File.Exists(file)) {\n try {\n g2ps.Add(G2pDictionary.NewBuilder().Load(File.ReadAllText(file)).Build());\n } catch (Exception e) {\n Log.Error(e, $\"Failed to load {file}\");\n }\n }\n }\n g2ps.Add(new SpanishG2p());\n return new G2pFallbacks(g2ps.ToArray());\n }\n protected override Dictionary<string, string> GetDictionaryPhonemesReplacement() => dictionaryReplacements;\n\n protected override List<string> ProcessSyllable(Syllable syllable) {\n string prevV = syllable.prevV;\n string[] cc = syllable.cc;\n string v = syllable.v;\n\n string basePhoneme;\n var phonemes = new List<string>();\n\n var lastC = cc.Length - 1;\n var firstC = 0;\n\n var rv = $\"- {v}\";\n var vv1 = $\"{prevV} {v}\";\n var vv2 = $\"{prevV}{v}\";\n\n // Switch between phonetic systems, depending on certain aliases in the bank\n if (!HasOto($\"z{v}\", syllable.tone) && !HasOto($\"- z{v}\", syllable.tone)) {\n isSeseo = true;\n }\n if (!HasOto($\"{cc.Length}y{v}\", syllable.vowelTone) && !HasOto($\"- {cc.Length}y{v}\", syllable.vowelTone)) {\n isSemiVowelFallback = true;\n }\n if (!HasOto($\"nh{v}\", syllable.vowelTone) && !HasOto($\"- nh{v}\", syllable.vowelTone)) {\n isEñeFallback = true;\n }\n\n if (syllable.IsStartingV) {\n basePhoneme = rv;\n if (!HasOto(rv, syllable.vowelTone)) {\n basePhoneme = $\"{v}\";\n }\n } else if (syllable.IsVV) {\n if (!CanMakeAliasExtension(syllable)) {\n if (HasOto(vv1, syllable.vowelTone)) {\n basePhoneme = vv1;\n } else if (!HasOto(vv1, syllable.vowelTone) && HasOto(vv2, syllable.vowelTone)) {\n basePhoneme = vv2;\n } else {\n basePhoneme = v;\n }\n } else {\n // the previous alias will be extended\n basePhoneme = null;\n }\n } else if (syllable.IsStartingCVWithOneConsonant) {\n // TODO: move to config -CV or -C CV\n var rcv = $\"- {cc[0]}{v}\";\n if (HasOto(rcv, syllable.vowelTone) || HasOto(ValidateAlias(rcv), syllable.vowelTone)) {\n basePhoneme = rcv;\n } else {\n basePhoneme = $\"{cc[0]}{v}\";\n }\n } else if (syllable.IsStartingCVWithMoreThanOneConsonant) {\n // try RCCV\n var rccv = $\"- {string.Join(\"\", cc)}{v}\";\n var ccv = string.Join(\"\", cc) + v;\n var crv = $\"{cc.Last()} {v}\";\n if ((HasOto(rccv, syllable.vowelTone) || HasOto(ValidateAlias(rccv), syllable.vowelTone)) && (initialCC.Contains(string.Join(\"\", cc)) || initialCC.Contains(ValidateAlias(string.Join(\"\", cc))))) {\n basePhoneme = rccv;\n lastC = 0;\n } else if (!HasOto(rccv, syllable.vowelTone) && !HasOto(ValidateAlias(rccv), syllable.vowelTone) && (HasOto(ccv, syllable.vowelTone) || HasOto(ValidateAlias(ccv), syllable.vowelTone)) && (initialCC.Contains(string.Join(\"\", cc)) || initialCC.Contains(ValidateAlias(string.Join(\"\", cc))))) {\n basePhoneme = ccv;\n lastC = 0;\n } else {\n basePhoneme = ValidateAlias(crv);\n if (!HasOto(ValidateAlias(crv), syllable.vowelTone)) {\n basePhoneme = $\"{cc.Last()}{v}\";\n }\n // try RCC\n for (var i = cc.Length; i > 1; i--) {\n var rcc = $\"- {string.Join(\"\", cc.Take(i))}\";\n var cc1 = string.Join(\"\", cc.Take(i));\n if (initialCC.Contains(string.Join(\"\", cc.Take(i))) || initialCC.Contains(ValidateAlias(string.Join(\"\", cc.Take(i))))) {\n if (TryAddPhoneme(phonemes, syllable.tone, rcc, ValidateAlias(rcc), cc1, ValidateAlias(cc1))) {\n firstC = i - 1;\n break;\n }\n }\n }\n if (phonemes.Count == 0) {\n TryAddPhoneme(phonemes, syllable.tone, $\"- {cc[0]}\", ValidateAlias($\"- {cc[0]}\"));\n }\n }\n } else { // VCV\n var vcv = $\"{prevV} {cc[0]}{v}\";\n var vccv = $\"{prevV} {string.Join(\"\", cc)}{v}\";\n if ((HasOto(vcv, syllable.vowelTone) || HasOto(ValidateAlias(vcv), syllable.vowelTone))\n && (syllable.IsVCVWithOneConsonant)) {\n basePhoneme = vcv;\n } else if ((HasOto(vccv, syllable.vowelTone) || HasOto(ValidateAlias(vccv), syllable.vowelTone))\n && syllable.IsVCVWithMoreThanOneConsonant\n && (initialCC.Contains(string.Join(\"\", cc)) || initialCC.Contains(ValidateAlias(string.Join(\"\", cc))))) {\n basePhoneme = vccv;\n lastC = 0;\n } else {\n var cv = cc.Last() + v;\n var crv = $\"{cc.Last()} {v}\";\n basePhoneme = cv;\n if (!HasOto(cv, syllable.vowelTone) && !HasOto(ValidateAlias(cv), syllable.vowelTone)) {\n basePhoneme = crv;\n }\n\n // try CCV\n if (cc.Length - firstC > 1) {\n for (var i = firstC; i < lastC; i++) {\n var ccv = $\"{string.Join(\"\", cc.Skip(i))}{v}\";\n var ccv2 = $\"{string.Join(\" \", cc.Skip(i))}{v}\";\n var ccv3 = $\"{cc[0]} {string.Join(\"\", cc.Skip(i))}{v}\";\n if ((HasOto(ccv, syllable.vowelTone) || HasOto(ValidateAlias(ccv), syllable.vowelTone)) && (initialCC.Contains(string.Join(\"\", cc.Skip(i))) || initialCC.Contains(ValidateAlias(string.Join(\"\", cc.Skip(i)))))) {\n lastC = i;\n basePhoneme = ccv;\n break;\n } else if (HasOto(ccv2, syllable.vowelTone) || HasOto(ValidateAlias(ccv2), syllable.vowelTone)) {\n lastC = i;\n basePhoneme = ccv2;\n break;\n } else if ((HasOto(ccv3, syllable.vowelTone) || HasOto(ValidateAlias(ccv3), syllable.vowelTone)) && (initialCC.Contains(string.Join(\"\", cc.Skip(i))) || initialCC.Contains(ValidateAlias(string.Join(\"\", cc.Skip(i)))))) {\n lastC = i;\n basePhoneme = ccv3;\n break;\n } else {\n continue;\n }\n }\n }\n // try vcc or vc\n for (var i = lastC + 1; i >= 0; i--) {\n var vc1 = $\"{prevV} {cc[0]}\";\n var vc2 = $\"{prevV}{cc[0]}\";\n var vcc = $\"{prevV} {string.Join(\"\", cc.Take(2))}\";\n var vcc2 = $\"{prevV}{string.Join(\"\", cc.Take(2))}\";\n if ((HasOto(ValidateAlias(vcc), syllable.tone) || HasOto(ValidateAlias(vcc), syllable.tone)) && (!notClusters.Contains(string.Join(\"\", cc.Take(2))) && !notClusters.Contains(ValidateAlias(string.Join(\"\", cc.Take(2)))))) {\n phonemes.Add(vcc);\n firstC = 1;\n break;\n } else if ((HasOto(vcc2, syllable.tone) || HasOto(ValidateAlias(vcc2), syllable.tone)) && (!notClusters.Contains(string.Join(\"\", cc.Take(2))) && !notClusters.Contains(ValidateAlias(string.Join(\"\", cc.Take(2)))))) {\n phonemes.Add(vcc2);\n firstC = 1;\n break;\n } else if ((HasOto(vc1, syllable.tone) || HasOto(ValidateAlias(vc1), syllable.tone))) {\n phonemes.Add(vc1);\n break;\n } else if (HasOto(vc2, syllable.tone) || HasOto(ValidateAlias(vc2), syllable.tone)) {\n phonemes.Add(vc2);\n break;\n }\n }\n }\n }\n for (var i = firstC; i < lastC; i++) {\n // we could use some CCV, so lastC is used\n // we could use -CC so firstC is used\n var cc1 = $\"{cc[i]}{cc[i + 1]}\";\n\n // Use [C1C2]\n if (!HasOto(cc1, syllable.tone)) {\n cc1 = ValidateAlias(cc1);\n }\n // Use [C1 C2]\n if (!HasOto(cc1, syllable.tone)) {\n cc1 = $\"{cc[i]} {cc[i + 1]}\";\n }\n if (!HasOto(cc1, syllable.tone)) {\n cc1 = ValidateAlias(cc1);\n }\n if (i + 1 < lastC) {\n var cc2 = $\"{cc[i + 1]}{cc[i + 2]}\";\n\n // Use [C2C3]\n if (!HasOto(cc2, syllable.tone)) {\n cc2 = ValidateAlias(cc2);\n }\n // Use [C2 C3]\n if (!HasOto(cc2, syllable.tone)) {\n cc2 = $\"{cc[i + 1]} {cc[i + 2]}\";\n }\n if (!HasOto(cc2, syllable.tone)) {\n cc2 = ValidateAlias(cc2);\n }\n if ((HasOto(cc1, syllable.tone) || HasOto(ValidateAlias(cc1), syllable.tone)) && (HasOto(cc2, syllable.tone) || HasOto(ValidateAlias(cc2), syllable.tone))) {\n // like [V C1] [C1 C2] [C2 C3] [C3 ..]\n phonemes.Add(cc1);\n } else if (TryAddPhoneme(phonemes, syllable.tone, cc1, ValidateAlias(cc1))) {\n // like [V C1] [C1 C2] [C2 ..]\n } else {\n // like[V C1][C1][C2..]\n TryAddPhoneme(phonemes, syllable.tone, cc[i], ValidateAlias(cc[i]));\n }\n } else {\n // like [V C1] [C1 C2] [C2 ..] or like [V C1] [C1 -] [C3 ..]\n TryAddPhoneme(phonemes, syllable.tone, cc1, cc[i], ValidateAlias(cc[i]));\n }\n }\n\n phonemes.Add(basePhoneme);\n return phonemes;\n }\n\n protected override List<string> ProcessEnding(Ending ending) {\n string[] cc = ending.cc;\n string v = ending.prevV;\n\n var phonemes = new List<string>();\n\n var lastC = cc.Length - 1;\n var firstC = 0;\n\n if (ending.IsEndingV) { // ending V\n TryAddPhoneme(phonemes, ending.tone, $\"{v} -\", $\"{v}-\", $\"{v} R\");\n } else if (ending.IsEndingVCWithOneConsonant) { // ending VC\n var vcr = $\"{v} {cc[0]}-\";\n var vcr2 = $\"{v}{cc[0]}-\";\n var vc = $\"{v} {cc[0]}\";\n var vc2 = $\"{v}{cc[0]}\";\n if (HasOto(vcr, ending.tone) || HasOto(ValidateAlias(vcr), ending.tone)) {\n phonemes.Add(vcr);\n } else if (HasOto(vcr2, ending.tone) || HasOto(ValidateAlias(vcr2), ending.tone)) {\n phonemes.Add(vcr2);\n } else {\n if (HasOto(vc, ending.tone) || HasOto(ValidateAlias(vc), ending.tone)) {\n phonemes.Add(vc);\n } else if (HasOto(vc2, ending.tone) || HasOto(ValidateAlias(vc2), ending.tone)) {\n phonemes.Add(vc2);\n }\n if (burstConsonants.Contains(cc[0]) || burstConsonants.Contains(ValidateAlias(cc[0]))) {\n TryAddPhoneme(phonemes, ending.tone, $\"{cc[0]} -\", $\"{ValidateAlias(cc[0])} -\", cc[0], ValidateAlias(cc[0]));\n } else {\n TryAddPhoneme(phonemes, ending.tone, $\"{cc[0]} -\", $\"{ValidateAlias(cc[0])} -\", $\"{cc[0]}-\", $\"{ValidateAlias(cc[0])}-\", $\"{cc[0]} R\", $\"{ValidateAlias(cc[0])} R\");\n }\n }\n } else { // ending VCC (very rare, usually only occurs in words ending with \"x\")\n for (var i = lastC; i >= 0; i--) {\n var vcc = $\"{v} {string.Join(\"\", cc.Take(2))}-\";\n var vcc3 = $\"{v}{string.Join(\"\", cc.Take(2))}\";\n var vcc2 = $\"{v} {string.Join(\"\", cc.Take(2))}\";\n var vcc4 = $\"{v}{string.Join(\" \", cc.Take(2))}-\";\n var vc = $\"{v} {cc[0]}\";\n var vc2 = $\"{v}{cc[0]}\";\n if ((HasOto(vcc, ending.tone) || HasOto(ValidateAlias(vcc), ending.tone)) && lastC == 1 && !notClusters.Contains(string.Join(\"\", cc.Take(2))) && !notClusters.Contains(ValidateAlias(string.Join(\"\", cc.Take(2))))) {\n phonemes.Add(vcc);\n firstC = 1;\n break;\n } else if ((HasOto(vcc2, ending.tone) || HasOto(ValidateAlias(vcc2), ending.tone)) && !notClusters.Contains(string.Join(\"\", cc.Take(2))) && !notClusters.Contains(ValidateAlias(string.Join(\"\", cc.Take(2))))) {\n phonemes.Add(vcc2);\n firstC = 1;\n break;\n } else if ((HasOto(vcc3, ending.tone) || HasOto(ValidateAlias(vcc3), ending.tone)) && !notClusters.Contains(string.Join(\"\", cc.Take(2))) && !notClusters.Contains(ValidateAlias(string.Join(\"\", cc.Take(2))))) {\n phonemes.Add(vcc3);\n firstC = 1;\n break;\n } else if ((HasOto(vcc4, ending.tone) || HasOto(ValidateAlias(vcc4), ending.tone)) && lastC == 1 && !notClusters.Contains(string.Join(\"\", cc.Take(2))) && !notClusters.Contains(ValidateAlias(string.Join(\"\", cc.Take(2))))) {\n phonemes.Add(vcc4);\n firstC = 1;\n break;\n } else\n if (HasOto(vc, ending.tone) || HasOto(ValidateAlias(vc), ending.tone)) {\n phonemes.Add(vc);\n break;\n } else {\n TryAddPhoneme(phonemes, ending.tone, vc2, ValidateAlias(vc2));\n break;\n }\n }\n\n for (var i = firstC; i < lastC; i++) {\n // all CCs except the first one are /C1C2/, the last one is /C1 C2-/\n // but if there is no /C1C2/, we try /C1 C2-/, vise versa for the last one\n var cc1 = $\"{cc[i]} {cc[i + 1]}\";\n if (i < cc.Length - 2) {\n var cc2 = $\"{cc[i + 1]} {cc[i + 2]}\";\n if (!HasOto(cc1, ending.tone)) {\n cc1 = ValidateAlias(cc1);\n }\n if (!HasOto(cc1, ending.tone) && !notClusters.Contains($\"{cc[i]}{cc[i + 1]}\") && !notClusters.Contains(ValidateAlias($\"{cc[i]}{cc[i + 1]}\"))) {\n cc1 = $\"{cc[i]}{cc[i + 1]}\";\n }\n if (!HasOto(cc1, ending.tone)) {\n cc1 = ValidateAlias(cc1);\n }\n if (!HasOto(cc2, ending.tone)) {\n cc2 = ValidateAlias(cc2);\n }\n if (!HasOto(cc2, ending.tone)) {\n cc2 = $\"{cc[i + 1]}{cc[i + 2]}\";\n }\n if (!HasOto(cc2, ending.tone)) {\n cc2 = ValidateAlias(cc2);\n }\n if (HasOto(cc1, ending.tone) && (HasOto(cc2, ending.tone) || HasOto($\"{cc[i + 1]} {cc[i + 2]}-\", ending.tone) || HasOto(ValidateAlias($\"{cc[i + 1]} {cc[i + 2]}-\"), ending.tone)) || HasOto($\"{cc[i + 1]}{cc[i + 2]}-\", ending.tone) || HasOto(ValidateAlias($\"{cc[i + 1]}{cc[i + 2]}-\"), ending.tone)) {\n // like [C1 C2][C2 ...]\n phonemes.Add(cc1);\n } else if ((HasOto(cc[i], ending.tone) || HasOto(ValidateAlias(cc[i]), ending.tone) && (HasOto(cc2, ending.tone) || HasOto($\"{cc[i + 1]} {cc[i + 2]}-\", ending.tone) || HasOto(ValidateAlias($\"{cc[i + 1]} {cc[i + 2]}-\"), ending.tone) || HasOto($\"{cc[i + 1]}{cc[i + 2]}-\", ending.tone) || HasOto(ValidateAlias($\"{cc[i + 1]}{cc[i + 2]}-\"), ending.tone)))) {\n // like [C1 C2-][C3 ...]\n phonemes.Add(cc[i]);\n } else if (TryAddPhoneme(phonemes, ending.tone, $\"{cc[i + 1]} {cc[i + 2]}-\", ValidateAlias($\"{cc[i + 1]} {cc[i + 2]}-\"), $\"{cc[i + 1]}{cc[i + 2]}-\", ValidateAlias($\"{cc[i + 1]}{cc[i + 2]}-\"))) {\n // like [C1 C2-][C3 ...]\n i++;\n } else if (TryAddPhoneme(phonemes, ending.tone, $\"{cc[i + 1]}{cc[i + 2]}\", ValidateAlias($\"{cc[i + 1]}{cc[i + 2]}\"))) {\n // like [C1C2][C2 ...]\n i++;\n } else if (TryAddPhoneme(phonemes, ending.tone, cc1, ValidateAlias(cc1))) {\n i++;\n } else {\n // like [C1][C2 ...]\n TryAddPhoneme(phonemes, ending.tone, cc[i], ValidateAlias(cc[i]), $\"{cc[i]} -\", ValidateAlias($\"{cc[i]} -\"));\n TryAddPhoneme(phonemes, ending.tone, cc[i + 1], ValidateAlias(cc[i + 1]), $\"{cc[i + 1]} -\", ValidateAlias($\"{cc[i + 1]} -\"));\n i++;\n }\n } else {\n if (!HasOto(cc1, ending.tone)) {\n cc1 = ValidateAlias(cc1);\n }\n if (!HasOto(cc1, ending.tone)) {\n cc1 = $\"{cc[i]}{cc[i + 1]}\";\n }\n if (!HasOto(cc1, ending.tone)) {\n cc1 = ValidateAlias(cc1);\n }\n if (TryAddPhoneme(phonemes, ending.tone, $\"{cc[i]} {cc[i + 1]}-\", ValidateAlias($\"{cc[i]} {cc[i + 1]}-\"), $\"{cc[i]}{cc[i + 1]}-\", ValidateAlias($\"{cc[i]}{cc[i + 1]}-\"))) {\n // like [C1 C2-]\n i++;\n } else if (TryAddPhoneme(phonemes, ending.tone, cc1, ValidateAlias(cc1))) {\n // like [C1 C2][C2 -]\n TryAddPhoneme(phonemes, ending.tone, $\"{cc[i + 1]} -\", ValidateAlias($\"{cc[i + 1]} -\"), cc[i + 1], ValidateAlias(cc[i + 1]));\n i++;\n } else if (TryAddPhoneme(phonemes, ending.tone, $\"{cc[i]}{cc[i + 1]}\", ValidateAlias($\"{cc[i]}{cc[i + 1]}\"))) {\n // like [C1C2][C2 -]\n TryAddPhoneme(phonemes, ending.tone, $\"{cc[i + 1]} -\", ValidateAlias($\"{cc[i + 1]} -\"), cc[i + 1], ValidateAlias(cc[i + 1]));\n i++;\n } else {\n // like [C1][C2 -]\n TryAddPhoneme(phonemes, ending.tone, cc[i], ValidateAlias(cc[i]), $\"{cc[i]} -\", ValidateAlias($\"{cc[i]} -\"));\n TryAddPhoneme(phonemes, ending.tone, $\"{cc[i + 1]} -\", ValidateAlias($\"{cc[i + 1]} -\"), cc[i + 1], ValidateAlias(cc[i + 1]));\n i++;\n }\n }\n }\n }\n return phonemes;\n }\n\n protected override string ValidateAlias(string alias, int tone = 0) {\n if (HasOto(alias, tone)) return alias;\n\n string baseResolved = base.ValidateAlias(alias, tone);\n if (!string.IsNullOrEmpty(baseResolved) && baseResolved != alias) {\n if (HasOto(baseResolved, tone)) {\n return baseResolved;\n }\n alias = baseResolved;\n }\n // Validate alias depending on method\n if (isSeseo) {\n foreach (var syllable in seseo) {\n alias = alias.Replace(syllable.Key, syllable.Value);\n }\n }\n if (isSemiVowelFallback) {\n foreach (var syllable in semiVowelFallback) {\n alias = alias.Replace(syllable.Key, syllable.Value);\n }\n }\n if (isEñeFallback) {\n foreach (var syllable in eñeFallback) {\n alias = alias.Replace(syllable.Key, syllable.Value);\n }\n }\n\n // Other validations\n if (alias.Contains(\"I\")) {\n alias = alias.Replace(\"I\", \"i\");\n }\n if (alias.Contains(\"U\")) {\n alias = alias.Replace(\"U\", \"u\");\n }\n foreach (var cc in new[] { \"ks\" }) {\n alias = alias.Replace(\"ks\", \"x\");\n }\n if (alias == \"r\") {\n alias = alias.Replace(\"r\", \"rr\");\n }\n if (alias == \"ch\") {\n alias = alias.Replace(\"ch\", \"tch\");\n }\n return alias;\n }\n\n // Endings has 50 ticks gap\n protected override bool NoGap => true;\n\n protected override double GetTransitionBasicLengthMs(string alias, int tone, PhonemeAttributes attr) {\n double otoLength = GetTransitionBasicLengthMsByOto(alias, tone, attr);\n\n return otoLength;\n }\n }\n}\n",
+  "source_github_url": "https://raw.githubusercontent.com/openutau/OpenUtau/master/OpenUtau.Plugin.Builtin/SpanishSyllableBasedPhonemizer.cs",
+  "custom_usings": [
+    "using System;",
+    "using System.Collections.Generic;",
+    "using System.Linq;",
+    "using OpenUtau.Api;",
+    "using OpenUtau.Core.G2p;"
+  ],
+  "custom_class_fields": "",
+  "custom_preprocess_code": "",
+  "custom_postprocess_code": "",
+  "custom_helper_methods": ""
+}

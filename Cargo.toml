@@ -1,0 +1,28 @@
+[package]
+name = "phonemizer-studio"
+version = "1.0.0"
+edition = "2021"
+authors = ["Phonemizer Studio Team"]
+description = "Comprehensive OpenUtau Phonemizer Creator, Simulator & C# Compiler in Rust"
+
+[dependencies]
+eframe = { version = "0.29", default-features = false, features = ["default_fonts", "glow", "persistence"] }
+egui = "0.29"
+egui_extras = { version = "0.29", features = ["all_loaders"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+rfd = "0.15"
+regex = "1.11"
+tokio = { version = "1.40", features = ["full"] }
+chrono = "0.4"
+crossbeam-channel = "0.5"
+tempfile = "3.13"
+open = "5.3"
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
+rodio = { version = "0.19", default-features = false, features = ["symphonia-wav"] }
+zip = { version = "2.2", default-features = false, features = ["deflate"] }
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1

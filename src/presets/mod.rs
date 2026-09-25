@@ -1,0 +1,23 @@
+pub mod portuguese;
+pub mod japanese;
+pub mod spanish;
+pub mod english;
+pub mod french;
+pub mod russian;
+pub mod italian;
+pub mod german;
+pub mod asian_presets;
+pub mod other_presets;
+pub mod universal;
+
+pub use portuguese::create_portuguese_preset;
+pub use japanese::{create_japanese_vcv_preset, create_japanese_cvvc_preset};
+pub use spanish::create_spanish_preset;
+pub use english::{create_english_arpasing_preset, create_english_vccv_preset};
+pub use french::create_french_preset;
+pub use russian::create_russian_cvc_preset;
+pub use italian::create_italian_preset;
+pub use german::create_german_vccv_preset;
+pub use asian_presets::{create_chinese_cvv_preset, create_cantonese_preset, create_korean_hangul_preset};
+pub use other_presets::{create_polish_preset, create_thai_preset, create_turkish_preset, create_vietnamese_preset, create_latin_preset};
+pub use universal::create_universal_scratch_preset;

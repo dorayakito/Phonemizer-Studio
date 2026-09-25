@@ -1,0 +1,433 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
+using Classic;
+using OpenUtau.Api;
+using OpenUtau.Core.Ustx;
+using OpenUtau.Core;
+
+namespace OpenUtau.Plugin.Builtin {
+    [Phonemizer("Japanese presamp Phonemizer", "JA VCV & CVVC", "Maiko", language: "JA")]
+    public class JapanesePresampPhonemizer : Phonemizer {
+
+        private USinger singer;
+        private Presamp presamp;
+        private static int globalPresampGeneration = 0;
+        private int localPresampGeneration = 0;
+        private static PresampWatcher presampWatcher;
+        private static string currentlyWatchedPresampDir;
+
+        static readonly string[] substitution = new string[] {
+            "ty,ch,ts=t", "j,dy=d", "gy=g", "ky=k", "py=p", "ny=n", "ry=r", "my=m", "hy,f=h", "by,v=b", "dz=z", "l=r", "ly=l"
+        };
+
+        static readonly Dictionary<string, string> substituteLookup;
+
+        static JapanesePresampPhonemizer() {
+            substituteLookup = substitution.ToList()
+                .SelectMany(line => {
+                    var parts = line.Split('=');
+                    return parts[0].Split(',').Select(orig => (orig, parts[1]));
+                })
+                .ToDictionary(t => t.Item1, t => t.Item2);
+        }
+
+        public override void SetSinger(USinger singer) {
+            bool generationChanged = this.localPresampGeneration != globalPresampGeneration;
+            if (this.singer == singer && !generationChanged) {
+                return;
+            }
+            this.singer = singer;
+            if (this.singer == null) {
+                return;
+            }
+            this.localPresampGeneration = globalPresampGeneration;
+            if (this.presamp == null || generationChanged) {
+                this.presamp = new Presamp();
+                this.presamp.ReadPresampIni(singer.Location, singer.TextFileEncoding);
+            }
+            SetupPresampWatcher(singer.Location);
+        }
+
+        private void SetupPresampWatcher(string directory) {
+            if (string.IsNullOrEmpty(directory) || currentlyWatchedPresampDir == directory) {
+                return;
+            }
+            if (presampWatcher != null) {
+                presampWatcher.Dispose();
+                presampWatcher = null;
+            }
+            currentlyWatchedPresampDir = directory;
+            if (Directory.Exists(directory)) {
+                presampWatcher = new PresampWatcher(directory, () => {
+                    System.Threading.Thread.Sleep(200);
+                    globalPresampGeneration++;
+                    if (this.singer != null) {
+                        OpenUtau.Core.SingerManager.Inst.ScheduleReload(this.singer);
+                    }
+                });
+            }
+        }
+
+        public override Result Process(Note[] notes, Note? prev, Note? next, Note? prevNeighbour, Note? nextNeighbour, Note[] prevNeighbours) {
+            var result = new List<Phoneme>();
+            bool preCFlag = false;
+
+            var note = notes[0];
+            var currentLyric = ParseLyricFromNote(note);
+            var currentAlias = ParseAliasFromLyric(currentLyric);
+            var vcvpad = presamp.AliasRules.VCVPAD;
+            var vcpad = presamp.AliasRules.VCPAD;
+            var initial = $"-{vcvpad}{currentLyric}";
+            var cfLyric = $"*{vcpad}{currentLyric}";
+
+            var vowelUpper = Regex.Match(currentLyric, "[]").Value ?? currentLyric;
+            var glottalCVtests = new List<string> { $"{vcpad}{vowelUpper}", $"{vowelUpper}", $"{vowelUpper}", $"-{vcvpad}{vowelUpper}", $"-{vcvpad}{vowelUpper}", initial, currentLyric, vowelUpper };
+
+            if (!string.IsNullOrEmpty(note.phoneticHint)) {
+                var tests = new List<string> { currentLyric };
+                if (checkOtoUntilHit(tests, note, out var oto)) {
+                    currentLyric = oto.Alias;
+                }
+            } else if (prevNeighbour == null) {
+                preCFlag = true;
+                if (currentLyric.Contains("")) {
+                    var tests = new List<string> { $"-{vcvpad}{vowelUpper}", $"{vcpad}{vowelUpper}", $"{vowelUpper}", $"{vowelUpper}", $"-{vcvpad}{vowelUpper}", initial, currentLyric };
+                    if (checkOtoUntilHit(tests, note, out var oto1)) {
+                        currentLyric = oto1.Alias;
+                    }
+                } else {
+                    var tests = new List<string> { initial, currentLyric };
+                    if (checkOtoUntilHit(tests, note, out var oto)) {
+                        currentLyric = oto.Alias;
+                    }
+                }
+            } else {
+                var prevLyric = ParseLyricFromNote(prevNeighbour.Value);
+                string prevAlias = ParseAliasFromLyric(prevLyric);
+
+                string vcGlottalStop = "[aiueonN]" + vcpad + "$";
+                if (prevLyric == "" || Regex.IsMatch(prevLyric, vcGlottalStop)) {
+
+                    if (checkOtoUntilHit(glottalCVtests, note, out var oto)) {
+                        currentLyric = oto.Alias;
+                    }
+                } else if (prevLyric.Contains("")) {
+
+                    var tests = new List<string> { currentLyric, initial };
+                    if (checkOtoUntilHit(tests, note, out var oto)) {
+                        currentLyric = oto.Alias;
+                    }
+                } else if (TryGetPresampPhoneme(prevAlias, out PresampPhoneme prevPhoneme)) {
+                    if (currentLyric.Contains("")) {
+
+                        var tests = new List<string>();
+                        UOto oto;
+
+                        if (Regex.IsMatch(currentLyric, vcGlottalStop)) {
+                            tests = new List<string> { currentLyric };
+                            if (checkOtoUntilHit(tests, note, out oto)) {
+                                return MakeSimpleResult(oto.Alias);
+                            }
+                        } else if (currentLyric == "" && prevPhoneme.HasVowel) {
+                            var vc = $"{prevPhoneme.Vowel}{vcpad}{currentLyric}";
+                            tests = new List<string> { vc, currentLyric };
+                            if (checkOtoUntilHit(tests, note, out oto)) {
+                                return MakeSimpleResult(oto.Alias);
+                            }
+                        } else if (prevPhoneme.HasVowel) {
+                            tests.Add($"{prevPhoneme.Vowel}{vcvpad}{currentLyric}");
+                            tests.Add($"{prevPhoneme.Vowel}{vcvpad}{vowelUpper}");
+                            tests.Add($"{prevPhoneme.Vowel}{vcvpad}{vowelUpper}");
+                        }
+                        tests.AddRange(glottalCVtests);
+                        if (checkOtoUntilHit(tests, note, out oto)) {
+                            currentLyric = oto.Alias;
+                        }
+                    } else if (TryGetPresampPhoneme(currentLyric, out PresampPhoneme currentPhoneme) && currentPhoneme.IsPriority) {
+
+                        var tests = new List<string> { currentLyric, initial };
+                        if (checkOtoUntilHit(tests, note, out var oto)) {
+                            currentLyric = oto.Alias;
+                        }
+                    } else if (prevPhoneme.HasVowel) {
+                        string prevVow = prevPhoneme.Vowel;
+
+                        if (currentLyric == "" && nextNeighbour != null) {
+                            var nextLyric = ParseLyricFromNote(nextNeighbour.Value);
+                            var nextAlias = ParseAliasFromLyric(nextLyric);
+
+                            var axtu1 = $"{prevVow}{vcvpad}{currentLyric}";
+                            var axtu2 = $"{prevVow}{vcpad}{currentLyric}";
+                            var tests2 = new List<string> { axtu1, axtu2, currentLyric };
+                            if (TryGetPresampPhoneme(nextAlias, out PresampPhoneme nextPhoneme) && nextPhoneme.HasConsonant) {
+                                tests2.Insert(2, $"{prevVow}{vcpad}{nextPhoneme.Consonant}");
+                            }
+                            if (checkOtoUntilHit(tests2, note, out var oto2)) {
+                                return MakeSimpleResult(oto2.Alias);
+                            }
+                        } else {
+                            var vcv = $"{prevVow}{vcvpad}{currentLyric}";
+                            var vc = $"{prevVow}{vcpad}{currentLyric}";
+                            var tests = new List<string> { vcv, vc, cfLyric, currentLyric };
+                            if (checkOtoUntilHit(tests, note, out var oto)) {
+                                currentLyric = oto.Alias;
+                            }
+                        }
+                    } else {
+
+                        var tests = new List<string> { currentLyric, initial };
+                        if (checkOtoUntilHit(tests, note, out var oto)) {
+                            currentLyric = oto.Alias;
+                        }
+                    }
+                } else {
+
+                    preCFlag = true;
+                    var tests = new List<string> { initial, currentLyric };
+                    if (checkOtoUntilHit(tests, note, out var oto)) {
+                        currentLyric = oto.Alias;
+                    }
+                }
+            }
+            result.Add(new Phoneme() { phoneme = currentLyric, index = 0 });
+
+            if (string.IsNullOrEmpty(note.phoneticHint)
+                && preCFlag
+                && !currentLyric.Contains(vcvpad)
+                && TryGetPresampPhoneme(currentAlias, out PresampPhoneme phoneme)
+                && phoneme.HasConsonant
+                && (presamp.Priorities == null || !presamp.Priorities.Contains(phoneme.Consonant))) {
+                if (checkOtoUntilHit(new List<string> { $"-{vcvpad}{phoneme.Consonant}" }, note, 2, out var cOto, out var color)
+                    && checkOtoUntilHit(new List<string> { currentLyric }, note, out var oto)) {
+                    int endTick = notes[^1].position + notes[^1].duration;
+                    var attr = note.phonemeAttributes?.FirstOrDefault(attr => attr.index == 0) ?? default;
+                    var cLength = Math.Max(30, -timeAxis.MsToTickAt(-oto.Preutter, endTick) * (attr.consonantStretchRatio ?? GetParentConsonantStretchRatio()));
+
+                    if (prevNeighbour != null) {
+                        cLength = Math.Min(prevNeighbour.Value.duration / 2, cLength);
+                    } else if (prev != null) {
+                        cLength = Math.Min(note.position - prev.Value.position - prev.Value.duration, cLength);
+                    }
+
+                    result.Insert(0, new Phoneme() {
+                        phoneme = cOto.Alias,
+                        position = Convert.ToInt32(- cLength),
+                        index = 2,
+                        expressions = new List<PhonemeExpression>()
+                    });
+                    if (color != null) {
+                        result[0].expressions.Add(new PhonemeExpression() { abbr = Core.Format.Ustx.CLR, value = (int)color });
+                    }
+                    if (presamp.CFlags == "p0") {
+                        result.First(p => p.index == 2).expressions.Add(new PhonemeExpression() { abbr = Core.Format.Ustx.NORM, value = 0 });
+                    }
+                }
+            }
+
+            if (nextNeighbour != null && string.IsNullOrEmpty(nextNeighbour.Value.phoneticHint)) {
+                int totalDuration = notes.Sum(n => n.duration);
+                if (timeAxis.TickPosToMsPos(totalDuration) < 100 && presamp.MustVC == false) {
+                    return new Result { phonemes = result.ToArray() };
+                }
+
+                var nextLyric = ParseLyricFromNote(nextNeighbour.Value);
+                var nextAlias = ParseAliasFromLyric(nextLyric);
+                string vcPhoneme;
+                int? vcColorIndex;
+
+                if (!TryGetPresampPhoneme(currentAlias, out PresampPhoneme currentPhoneme) || !currentPhoneme.HasVowel) {
+                    return new Result { phonemes = result.ToArray() };
+                }
+                var vowel = currentPhoneme.Vowel;
+
+                if (Regex.IsMatch(nextLyric, "[aiueonN]" + vcvpad) || Regex.IsMatch(nextLyric, "[aiueonN]" + vcpad)) {
+
+                    return new Result { phonemes = result.ToArray() };
+                } else {
+                    if (nextLyric.Contains("")) {
+                        if (nextLyric == "") {
+                            return new Result { phonemes = result.ToArray() };
+                        } else {
+                            vowelUpper = Regex.Match(nextLyric, "[]").Value;
+                            if (vowelUpper == null) {
+                                return new Result { phonemes = result.ToArray() };
+                            }
+
+                            var tests = new List<string>();
+                            tests.Add($"{vowel}{vcvpad}{nextLyric}");
+                            tests.Add($"{vowel}{vcvpad}{vowelUpper}");
+                            tests.Add($"{vowel}{vcvpad}{vowelUpper}");
+                            glottalCVtests = new List<string> { $"{vcpad}{vowelUpper}", $"{vowelUpper}", $"{vowelUpper}", $"-{vcvpad}{vowelUpper}", $"-{vcvpad}{vowelUpper}", initial, nextLyric, vowelUpper };
+                            tests.AddRange(glottalCVtests);
+                            if (checkOtoUntilHit(tests, nextNeighbour.Value, out var oto1) && oto1.Alias.Contains($"{vowel}{vcvpad}")) {
+                                return new Result { phonemes = result.ToArray() };
+                            }
+
+                            tests = new List<string> { $"{vowel}{vcpad}" };
+                            if (checkOtoUntilHit(tests, note, 1, out oto1, out var color)) {
+                                vcPhoneme = oto1.Alias;
+                                vcColorIndex = color;
+                            } else {
+                                return new Result { phonemes = result.ToArray() };
+                            }
+                        }
+                    } else {
+
+                        if (!TryGetPresampPhoneme(nextAlias, out PresampPhoneme nextPhoneme) || !nextPhoneme.HasConsonant) {
+                            return new Result { phonemes = result.ToArray() };
+                        }
+                        var consonant = nextPhoneme.Consonant;
+
+                        if (!nextPhoneme.IsPriority) {
+                            var nextVCV = $"{vowel}{vcvpad}{nextAlias}";
+                            var nextVC = $"{vowel}{vcpad}{nextAlias}";
+                            var tests = new List<string> { nextVCV, nextVC, nextAlias };
+                            if (checkOtoUntilHit(tests, nextNeighbour.Value, out var oto1)
+                                && (Regex.IsMatch(oto1.Alias, "[aiueonN]" + vcvpad) || Regex.IsMatch(oto1.Alias, "[aiueonN]" + vcpad))) {
+                                return new Result { phonemes = result.ToArray() };
+                            }
+                        }
+
+                        vcPhoneme = $"{vowel}{vcpad}{consonant}";
+                        var vcPhonemes = new List<string> { vcPhoneme };
+
+                        if (substituteLookup.TryGetValue(consonant ?? string.Empty, out var con)) {
+                            vcPhonemes.Add($"{vowel}{vcpad}{con}");
+                        }
+                        if (checkOtoUntilHit(vcPhonemes, note, 1, out var oto, out var color)) {
+                            vcPhoneme = oto.Alias;
+                            vcColorIndex = color;
+                        } else {
+                            return new Result { phonemes = result.ToArray() };
+                        }
+                    }
+                }
+                if (!string.IsNullOrEmpty(vcPhoneme)) {
+                    int vcLength = 120;
+                    int endTick = notes[^1].position + notes[^1].duration;
+                    var nextAttr = nextNeighbour.Value.phonemeAttributes?.FirstOrDefault(attr => attr.index == 0) ?? default;
+                    if (singer.TryGetMappedOto(nextLyric, nextNeighbour.Value.tone + (nextAttr.toneShift ?? GetParentToneShift()), nextAttr.voiceColor ?? GetParentVoiceColor(), out var nextOto)) {
+
+                        if (nextOto.Overlap < 0) {
+                            vcLength = -timeAxis.MsToTickAt(-(nextOto.Preutter - nextOto.Overlap), endTick);
+                        } else {
+                            vcLength = -timeAxis.MsToTickAt(-nextOto.Preutter, endTick);
+                        }
+                    }
+
+                    vcLength = Convert.ToInt32(Math.Min(totalDuration / 2, Math.Max(30, vcLength * (nextAttr.consonantStretchRatio ?? GetParentConsonantStretchRatio()))));
+
+                    result.Add(new Phoneme() {
+                        phoneme = vcPhoneme,
+                        position = totalDuration - vcLength,
+                        index = 1,
+                        expressions = new List<PhonemeExpression>()
+                    });
+                    if (vcColorIndex != null) {
+                        result.First(p => p.index == 1).expressions.Add(new PhonemeExpression() { abbr = Core.Format.Ustx.CLR, value = (int)vcColorIndex });
+                    }
+                }
+            }
+
+            return new Result { phonemes = result.ToArray() };
+        }
+
+        private bool checkOtoUntilHit(List<string> input, Note note, out UOto oto) {
+            oto = default;
+            var attr = note.phonemeAttributes?.FirstOrDefault(attr => attr.index == 0) ?? default;
+            string color = attr.voiceColor ?? GetParentVoiceColor();
+            int shift = attr.toneShift ?? GetParentToneShift();
+            int? alt = attr.alternate ?? GetParentAlternate();
+
+            var otos = new List<UOto>();
+            foreach (string test in input) {
+                if (singer.TryGetMappedOto(test + alt, note.tone + shift, color, out var otoAlt)) {
+                    otos.Add(otoAlt);
+                } else if (singer.TryGetMappedOto(test, note.tone + shift, color, out var otoCandidacy)) {
+                    otos.Add(otoCandidacy);
+                }
+            }
+
+            if (otos.Count > 0) {
+                oto = otos.FirstOrDefault(oto => oto.IsColorMatch(color));
+                if (oto == null) {
+                    oto = otos.First();
+                }
+                return true;
+            }
+            return false;
+        }
+        private bool checkOtoUntilHit(List<string> input, Note note, int index, out UOto oto, out int? colorIndex) {
+            oto = default;
+            colorIndex = null;
+            var attr = note.phonemeAttributes?.FirstOrDefault(attr => attr.index == index) ?? default;
+            var attr0 = note.phonemeAttributes?.FirstOrDefault(attr => attr.index == 0) ?? default;
+            string color = attr.voiceColor ?? attr0.voiceColor ?? GetParentVoiceColor();
+            int shift = attr.toneShift ?? attr0.toneShift ?? GetParentToneShift();
+            int? alt = attr.alternate ?? GetParentAlternate();
+
+            var otos = new List<UOto>();
+            foreach (string test in input) {
+                if (singer.TryGetMappedOto(test + alt, note.tone + shift, color, out var otoAlt)) {
+                    otos.Add(otoAlt);
+                } else if (singer.TryGetMappedOto(test, note.tone + shift, color, out var otoCandidacy)) {
+                    otos.Add(otoCandidacy);
+                }
+            }
+
+            if (otos.Count > 0) {
+                oto = otos.FirstOrDefault(oto => oto.IsColorMatch(color));
+                if (oto != null) {
+                    if (track != null && track.VoiceColorExp.options.Contains(color)) {
+                        colorIndex = Array.IndexOf(track.VoiceColorExp.options, color);
+                    }
+                    return true;
+                } else if (index != 1 && index != 2) {
+                    oto = otos.First();
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private string ParseLyricFromNote(Note note) {
+            var lyric = note.lyric.Normalize();
+            if (!string.IsNullOrEmpty(note.phoneticHint)) {
+                lyric = note.phoneticHint.Normalize();
+            } else {
+
+                if (presamp.Replace != null) {
+                    foreach (var pair in presamp.Replace) {
+                        if (pair.Key == lyric) {
+                            lyric = pair.Value;
+                        }
+                    }
+                }
+            }
+            return lyric;
+        }
+
+        private string ParseAliasFromLyric(string lyric) {
+            string alias = presamp.ParseAlias(lyric)[1];
+            if (alias != "" && alias.Contains("")) {
+                alias = alias.Replace("", "");
+            }
+            return alias;
+        }
+
+        private bool TryGetPresampPhoneme(string alias, out PresampPhoneme pPhoneme) {
+            if (presamp.PhonemeList.TryGetValue(alias, out pPhoneme)) {
+                return true;
+            } else {
+                var match = Regex.Match(alias, @".+([])");
+                if (match.Success) {
+                    return presamp.PhonemeList.TryGetValue(match.Groups[1].Value, out pPhoneme);
+                }
+            }
+            return false;
+        }
+    }
+}

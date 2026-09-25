@@ -1,0 +1,4 @@
+/target
+/test_plugins_output
+.DS_Store
+*.log

@@ -1,0 +1,1292 @@
+{
+  "name": "PortugueseSyllablePhonemizer",
+  "tag": "PT-BR",
+  "author": "OpenUtau PT-BR Community",
+  "version": "1.0.0",
+  "language_code": "pt",
+  "description": "Complete Brazilian Portuguese Syllable-based Phonemizer with VCV, CVVC, CVC and Nasal Vowels",
+  "namespace": "OpenUtau.Plugin.Builtin",
+  "base_class_type": "SyllableBased",
+  "openutau_plugins_dir": "/Users/victor/OpenUtau/Plugins",
+  "output_dll_name": "PortugueseSyllablePhonemizer.dll",
+  "vowels": [
+    {
+      "symbol": "a",
+      "ipa": "a",
+      "aliases": [
+        "ah",
+        "A"
+      ],
+      "is_nasal": false,
+      "is_diphthong": false,
+      "is_triphthong": false,
+      "second_vowel": null,
+      "third_vowel": null,
+      "diphthong_split_ratio": 0.65,
+      "end_glide": "a -",
+      "glottal_start_alias": null,
+      "elongation_symbol": null,
+      "stress_variants": [],
+      "color_overrides": []
+    },
+    {
+      "symbol": "e",
+      "ipa": "ɛ",
+      "aliases": [
+        "eh",
+        "E"
+      ],
+      "is_nasal": false,
+      "is_diphthong": false,
+      "is_triphthong": false,
+      "second_vowel": null,
+      "third_vowel": null,
+      "diphthong_split_ratio": 0.65,
+      "end_glide": "e -",
+      "glottal_start_alias": null,
+      "elongation_symbol": null,
+      "stress_variants": [],
+      "color_overrides": []
+    },
+    {
+      "symbol": "ee",
+      "ipa": "e",
+      "aliases": [
+        "ê",
+        "e^"
+      ],
+      "is_nasal": false,
+      "is_diphthong": false,
+      "is_triphthong": false,
+      "second_vowel": null,
+      "third_vowel": null,
+      "diphthong_split_ratio": 0.65,
+      "end_glide": "ee -",
+      "glottal_start_alias": null,
+      "elongation_symbol": null,
+      "stress_variants": [],
+      "color_overrides": []
+    },
+    {
+      "symbol": "i",
+      "ipa": "i",
+      "aliases": [
+        "ih",
+        "I"
+      ],
+      "is_nasal": false,
+      "is_diphthong": false,
+      "is_triphthong": false,
+      "second_vowel": null,
+      "third_vowel": null,
+      "diphthong_split_ratio": 0.65,
+      "end_glide": "i -",
+      "glottal_start_alias": null,
+      "elongation_symbol": null,
+      "stress_variants": [],
+      "color_overrides": []
+    },
+    {
+      "symbol": "o",
+      "ipa": "ɔ",
+      "aliases": [
+        "oh",
+        "O"
+      ],
+      "is_nasal": false,
+      "is_diphthong": false,
+      "is_triphthong": false,
+      "second_vowel": null,
+      "third_vowel": null,
+      "diphthong_split_ratio": 0.65,
+      "end_glide": "o -",
+      "glottal_start_alias": null,
+      "elongation_symbol": null,
+      "stress_variants": [],
+      "color_overrides": []
+    },
+    {
+      "symbol": "oo",
+      "ipa": "o",
+      "aliases": [
+        "ô",
+        "o^"
+      ],
+      "is_nasal": false,
+      "is_diphthong": false,
+      "is_triphthong": false,
+      "second_vowel": null,
+      "third_vowel": null,
+      "diphthong_split_ratio": 0.65,
+      "end_glide": "oo -",
+      "glottal_start_alias": null,
+      "elongation_symbol": null,
+      "stress_variants": [],
+      "color_overrides": []
+    },
+    {
+      "symbol": "u",
+      "ipa": "u",
+      "aliases": [
+        "uh",
+        "U"
+      ],
+      "is_nasal": false,
+      "is_diphthong": false,
+      "is_triphthong": false,
+      "second_vowel": null,
+      "third_vowel": null,
+      "diphthong_split_ratio": 0.65,
+      "end_glide": "u -",
+      "glottal_start_alias": null,
+      "elongation_symbol": null,
+      "stress_variants": [],
+      "color_overrides": []
+    },
+    {
+      "symbol": "an",
+      "ipa": "ɐ̃",
+      "aliases": [
+        "am",
+        "ã"
+      ],
+      "is_nasal": true,
+      "is_diphthong": false,
+      "is_triphthong": false,
+      "second_vowel": null,
+      "third_vowel": null,
+      "diphthong_split_ratio": 0.65,
+      "end_glide": "an -",
+      "glottal_start_alias": null,
+      "elongation_symbol": null,
+      "stress_variants": [],
+      "color_overrides": []
+    },
+    {
+      "symbol": "en",
+      "ipa": "ẽ",
+      "aliases": [
+        "em",
+        "e~"
+      ],
+      "is_nasal": true,
+      "is_diphthong": false,
+      "is_triphthong": false,
+      "second_vowel": null,
+      "third_vowel": null,
+      "diphthong_split_ratio": 0.65,
+      "end_glide": "en -",
+      "glottal_start_alias": null,
+      "elongation_symbol": null,
+      "stress_variants": [],
+      "color_overrides": []
+    },
+    {
+      "symbol": "in",
+      "ipa": "ĩ",
+      "aliases": [
+        "im",
+        "i~"
+      ],
+      "is_nasal": true,
+      "is_diphthong": false,
+      "is_triphthong": false,
+      "second_vowel": null,
+      "third_vowel": null,
+      "diphthong_split_ratio": 0.65,
+      "end_glide": "in -",
+      "glottal_start_alias": null,
+      "elongation_symbol": null,
+      "stress_variants": [],
+      "color_overrides": []
+    },
+    {
+      "symbol": "on",
+      "ipa": "õ",
+      "aliases": [
+        "om",
+        "o~"
+      ],
+      "is_nasal": true,
+      "is_diphthong": false,
+      "is_triphthong": false,
+      "second_vowel": null,
+      "third_vowel": null,
+      "diphthong_split_ratio": 0.65,
+      "end_glide": "on -",
+      "glottal_start_alias": null,
+      "elongation_symbol": null,
+      "stress_variants": [],
+      "color_overrides": []
+    },
+    {
+      "symbol": "un",
+      "ipa": "ũ",
+      "aliases": [
+        "um",
+        "u~"
+      ],
+      "is_nasal": true,
+      "is_diphthong": false,
+      "is_triphthong": false,
+      "second_vowel": null,
+      "third_vowel": null,
+      "diphthong_split_ratio": 0.65,
+      "end_glide": "un -",
+      "glottal_start_alias": null,
+      "elongation_symbol": null,
+      "stress_variants": [],
+      "color_overrides": []
+    },
+    {
+      "symbol": "ai",
+      "ipa": "aj",
+      "aliases": [
+        "ay"
+      ],
+      "is_nasal": false,
+      "is_diphthong": true,
+      "is_triphthong": false,
+      "second_vowel": "i",
+      "third_vowel": null,
+      "diphthong_split_ratio": 0.65,
+      "end_glide": "i -",
+      "glottal_start_alias": null,
+      "elongation_symbol": null,
+      "stress_variants": [],
+      "color_overrides": []
+    },
+    {
+      "symbol": "au",
+      "ipa": "aw",
+      "aliases": [
+        "aw"
+      ],
+      "is_nasal": false,
+      "is_diphthong": true,
+      "is_triphthong": false,
+      "second_vowel": "u",
+      "third_vowel": null,
+      "diphthong_split_ratio": 0.65,
+      "end_glide": "u -",
+      "glottal_start_alias": null,
+      "elongation_symbol": null,
+      "stress_variants": [],
+      "color_overrides": []
+    },
+    {
+      "symbol": "ei",
+      "ipa": "ej",
+      "aliases": [
+        "ey"
+      ],
+      "is_nasal": false,
+      "is_diphthong": true,
+      "is_triphthong": false,
+      "second_vowel": "i",
+      "third_vowel": null,
+      "diphthong_split_ratio": 0.65,
+      "end_glide": "i -",
+      "glottal_start_alias": null,
+      "elongation_symbol": null,
+      "stress_variants": [],
+      "color_overrides": []
+    },
+    {
+      "symbol": "eu",
+      "ipa": "ew",
+      "aliases": [
+        "ew"
+      ],
+      "is_nasal": false,
+      "is_diphthong": true,
+      "is_triphthong": false,
+      "second_vowel": "u",
+      "third_vowel": null,
+      "diphthong_split_ratio": 0.65,
+      "end_glide": "u -",
+      "glottal_start_alias": null,
+      "elongation_symbol": null,
+      "stress_variants": [],
+      "color_overrides": []
+    },
+    {
+      "symbol": "oi",
+      "ipa": "oj",
+      "aliases": [
+        "oy"
+      ],
+      "is_nasal": false,
+      "is_diphthong": true,
+      "is_triphthong": false,
+      "second_vowel": "i",
+      "third_vowel": null,
+      "diphthong_split_ratio": 0.65,
+      "end_glide": "i -",
+      "glottal_start_alias": null,
+      "elongation_symbol": null,
+      "stress_variants": [],
+      "color_overrides": []
+    },
+    {
+      "symbol": "ou",
+      "ipa": "ow",
+      "aliases": [
+        "ow"
+      ],
+      "is_nasal": false,
+      "is_diphthong": true,
+      "is_triphthong": false,
+      "second_vowel": "u",
+      "third_vowel": null,
+      "diphthong_split_ratio": 0.65,
+      "end_glide": "u -",
+      "glottal_start_alias": null,
+      "elongation_symbol": null,
+      "stress_variants": [],
+      "color_overrides": []
+    },
+    {
+      "symbol": "ui",
+      "ipa": "uj",
+      "aliases": [
+        "uy"
+      ],
+      "is_nasal": false,
+      "is_diphthong": true,
+      "is_triphthong": false,
+      "second_vowel": "i",
+      "third_vowel": null,
+      "diphthong_split_ratio": 0.65,
+      "end_glide": "i -",
+      "glottal_start_alias": null,
+      "elongation_symbol": null,
+      "stress_variants": [],
+      "color_overrides": []
+    },
+    {
+      "symbol": "aon",
+      "ipa": "ɐ̃w̃",
+      "aliases": [
+        "ão",
+        "aum"
+      ],
+      "is_nasal": true,
+      "is_diphthong": true,
+      "is_triphthong": false,
+      "second_vowel": "un",
+      "third_vowel": null,
+      "diphthong_split_ratio": 0.65,
+      "end_glide": "un -",
+      "glottal_start_alias": null,
+      "elongation_symbol": null,
+      "stress_variants": [],
+      "color_overrides": []
+    },
+    {
+      "symbol": "oen",
+      "ipa": "õj̃",
+      "aliases": [
+        "õe",
+        "oim"
+      ],
+      "is_nasal": true,
+      "is_diphthong": true,
+      "is_triphthong": false,
+      "second_vowel": "in",
+      "third_vowel": null,
+      "diphthong_split_ratio": 0.65,
+      "end_glide": "in -",
+      "glottal_start_alias": null,
+      "elongation_symbol": null,
+      "stress_variants": [],
+      "color_overrides": []
+    }
+  ],
+  "consonants": [
+    {
+      "symbol": "b",
+      "ipa": "b",
+      "aliases": [],
+      "consonant_type": "Stop",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": false,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": false,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    },
+    {
+      "symbol": "d",
+      "ipa": "d",
+      "aliases": [],
+      "consonant_type": "Stop",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": false,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": false,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    },
+    {
+      "symbol": "dj",
+      "ipa": "dj",
+      "aliases": [],
+      "consonant_type": "Affricate",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": false,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": false,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    },
+    {
+      "symbol": "f",
+      "ipa": "f",
+      "aliases": [],
+      "consonant_type": "Fricative",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": false,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": false,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    },
+    {
+      "symbol": "g",
+      "ipa": "g",
+      "aliases": [],
+      "consonant_type": "Stop",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": false,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": false,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    },
+    {
+      "symbol": "k",
+      "ipa": "k",
+      "aliases": [],
+      "consonant_type": "Stop",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": false,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": false,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    },
+    {
+      "symbol": "l",
+      "ipa": "l",
+      "aliases": [],
+      "consonant_type": "Liquid",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": true,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": true,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    },
+    {
+      "symbol": "lh",
+      "ipa": "lh",
+      "aliases": [],
+      "consonant_type": "Liquid",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": true,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": false,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    },
+    {
+      "symbol": "m",
+      "ipa": "m",
+      "aliases": [],
+      "consonant_type": "Nasal",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": true,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": true,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    },
+    {
+      "symbol": "n",
+      "ipa": "n",
+      "aliases": [],
+      "consonant_type": "Nasal",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": true,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": true,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    },
+    {
+      "symbol": "nh",
+      "ipa": "nh",
+      "aliases": [],
+      "consonant_type": "Nasal",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": true,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": false,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    },
+    {
+      "symbol": "p",
+      "ipa": "p",
+      "aliases": [],
+      "consonant_type": "Stop",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": false,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": false,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    },
+    {
+      "symbol": "r",
+      "ipa": "r",
+      "aliases": [],
+      "consonant_type": "Liquid",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": true,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": true,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    },
+    {
+      "symbol": "rh",
+      "ipa": "rh",
+      "aliases": [],
+      "consonant_type": "Liquid",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": true,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": true,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    },
+    {
+      "symbol": "s",
+      "ipa": "s",
+      "aliases": [],
+      "consonant_type": "Fricative",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": false,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": true,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    },
+    {
+      "symbol": "sh",
+      "ipa": "sh",
+      "aliases": [],
+      "consonant_type": "Fricative",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": false,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": true,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    },
+    {
+      "symbol": "t",
+      "ipa": "t",
+      "aliases": [],
+      "consonant_type": "Stop",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": false,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": false,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    },
+    {
+      "symbol": "tx",
+      "ipa": "tx",
+      "aliases": [],
+      "consonant_type": "Affricate",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": false,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": false,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    },
+    {
+      "symbol": "v",
+      "ipa": "v",
+      "aliases": [],
+      "consonant_type": "Fricative",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": false,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": false,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    },
+    {
+      "symbol": "z",
+      "ipa": "z",
+      "aliases": [],
+      "consonant_type": "Fricative",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": false,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": true,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    },
+    {
+      "symbol": "zh",
+      "ipa": "zh",
+      "aliases": [],
+      "consonant_type": "Fricative",
+      "place_of_articulation": "Alveolar",
+      "is_voiced": false,
+      "is_aspirated": false,
+      "is_syllabic": false,
+      "can_be_onset": true,
+      "can_be_coda": false,
+      "can_be_intervocalic": true,
+      "timing_ratio": 1.0,
+      "default_offset_ms": 0,
+      "pre_utterance_multiplier": 1.0,
+      "silence_gap_before_ms": 0
+    }
+  ],
+  "onset_clusters": [
+    {
+      "cluster": "br",
+      "components": [
+        "b",
+        "rh"
+      ],
+      "is_onset": true,
+      "split_timing_percentages": [
+        50.0,
+        50.0
+      ],
+      "bpm_shortening_threshold": 160,
+      "allow_elision_if_fast": false,
+      "custom_oto_alias": null
+    },
+    {
+      "cluster": "cr",
+      "components": [
+        "k",
+        "rh"
+      ],
+      "is_onset": true,
+      "split_timing_percentages": [
+        50.0,
+        50.0
+      ],
+      "bpm_shortening_threshold": 160,
+      "allow_elision_if_fast": false,
+      "custom_oto_alias": null
+    },
+    {
+      "cluster": "dr",
+      "components": [
+        "d",
+        "rh"
+      ],
+      "is_onset": true,
+      "split_timing_percentages": [
+        50.0,
+        50.0
+      ],
+      "bpm_shortening_threshold": 160,
+      "allow_elision_if_fast": false,
+      "custom_oto_alias": null
+    },
+    {
+      "cluster": "fr",
+      "components": [
+        "f",
+        "rh"
+      ],
+      "is_onset": true,
+      "split_timing_percentages": [
+        50.0,
+        50.0
+      ],
+      "bpm_shortening_threshold": 160,
+      "allow_elision_if_fast": false,
+      "custom_oto_alias": null
+    },
+    {
+      "cluster": "gr",
+      "components": [
+        "g",
+        "rh"
+      ],
+      "is_onset": true,
+      "split_timing_percentages": [
+        50.0,
+        50.0
+      ],
+      "bpm_shortening_threshold": 160,
+      "allow_elision_if_fast": false,
+      "custom_oto_alias": null
+    },
+    {
+      "cluster": "pr",
+      "components": [
+        "p",
+        "rh"
+      ],
+      "is_onset": true,
+      "split_timing_percentages": [
+        50.0,
+        50.0
+      ],
+      "bpm_shortening_threshold": 160,
+      "allow_elision_if_fast": false,
+      "custom_oto_alias": null
+    },
+    {
+      "cluster": "tr",
+      "components": [
+        "t",
+        "rh"
+      ],
+      "is_onset": true,
+      "split_timing_percentages": [
+        50.0,
+        50.0
+      ],
+      "bpm_shortening_threshold": 160,
+      "allow_elision_if_fast": false,
+      "custom_oto_alias": null
+    },
+    {
+      "cluster": "vr",
+      "components": [
+        "v",
+        "rh"
+      ],
+      "is_onset": true,
+      "split_timing_percentages": [
+        50.0,
+        50.0
+      ],
+      "bpm_shortening_threshold": 160,
+      "allow_elision_if_fast": false,
+      "custom_oto_alias": null
+    },
+    {
+      "cluster": "bl",
+      "components": [
+        "b",
+        "l"
+      ],
+      "is_onset": true,
+      "split_timing_percentages": [
+        50.0,
+        50.0
+      ],
+      "bpm_shortening_threshold": 160,
+      "allow_elision_if_fast": false,
+      "custom_oto_alias": null
+    },
+    {
+      "cluster": "cl",
+      "components": [
+        "k",
+        "l"
+      ],
+      "is_onset": true,
+      "split_timing_percentages": [
+        50.0,
+        50.0
+      ],
+      "bpm_shortening_threshold": 160,
+      "allow_elision_if_fast": false,
+      "custom_oto_alias": null
+    },
+    {
+      "cluster": "fl",
+      "components": [
+        "f",
+        "l"
+      ],
+      "is_onset": true,
+      "split_timing_percentages": [
+        50.0,
+        50.0
+      ],
+      "bpm_shortening_threshold": 160,
+      "allow_elision_if_fast": false,
+      "custom_oto_alias": null
+    },
+    {
+      "cluster": "gl",
+      "components": [
+        "g",
+        "l"
+      ],
+      "is_onset": true,
+      "split_timing_percentages": [
+        50.0,
+        50.0
+      ],
+      "bpm_shortening_threshold": 160,
+      "allow_elision_if_fast": false,
+      "custom_oto_alias": null
+    },
+    {
+      "cluster": "pl",
+      "components": [
+        "p",
+        "l"
+      ],
+      "is_onset": true,
+      "split_timing_percentages": [
+        50.0,
+        50.0
+      ],
+      "bpm_shortening_threshold": 160,
+      "allow_elision_if_fast": false,
+      "custom_oto_alias": null
+    },
+    {
+      "cluster": "tl",
+      "components": [
+        "t",
+        "l"
+      ],
+      "is_onset": true,
+      "split_timing_percentages": [
+        50.0,
+        50.0
+      ],
+      "bpm_shortening_threshold": 160,
+      "allow_elision_if_fast": false,
+      "custom_oto_alias": null
+    }
+  ],
+  "coda_clusters": [
+    {
+      "cluster": "st",
+      "components": [
+        "s",
+        "t"
+      ],
+      "is_onset": false,
+      "split_timing_percentages": [
+        50.0,
+        50.0
+      ],
+      "bpm_shortening_threshold": 160,
+      "allow_elision_if_fast": false,
+      "custom_oto_alias": null
+    },
+    {
+      "cluster": "sp",
+      "components": [
+        "s",
+        "p"
+      ],
+      "is_onset": false,
+      "split_timing_percentages": [
+        50.0,
+        50.0
+      ],
+      "bpm_shortening_threshold": 160,
+      "allow_elision_if_fast": false,
+      "custom_oto_alias": null
+    },
+    {
+      "cluster": "sk",
+      "components": [
+        "s",
+        "k"
+      ],
+      "is_onset": false,
+      "split_timing_percentages": [
+        50.0,
+        50.0
+      ],
+      "bpm_shortening_threshold": 160,
+      "allow_elision_if_fast": false,
+      "custom_oto_alias": null
+    }
+  ],
+  "pattern_rules": [
+    {
+      "pattern_type": "RestingStartVowel",
+      "template": "- {vowel}",
+      "enabled": true,
+      "priority": 10,
+      "fallback_template": "{vowel}",
+      "min_pitch_note": null,
+      "max_pitch_note": null,
+      "color_filter": null
+    },
+    {
+      "pattern_type": "RestingStartConsonant",
+      "template": "- {consonant}{vowel}",
+      "enabled": true,
+      "priority": 10,
+      "fallback_template": "{consonant}{vowel}",
+      "min_pitch_note": null,
+      "max_pitch_note": null,
+      "color_filter": null
+    },
+    {
+      "pattern_type": "VCV",
+      "template": "{prev_vowel} {consonant}{vowel}",
+      "enabled": true,
+      "priority": 9,
+      "fallback_template": "{consonant}{vowel}",
+      "min_pitch_note": null,
+      "max_pitch_note": null,
+      "color_filter": null
+    },
+    {
+      "pattern_type": "CV",
+      "template": "{consonant}{vowel}",
+      "enabled": true,
+      "priority": 8,
+      "fallback_template": null,
+      "min_pitch_note": null,
+      "max_pitch_note": null,
+      "color_filter": null
+    },
+    {
+      "pattern_type": "VC",
+      "template": "{prev_vowel} {consonant}",
+      "enabled": true,
+      "priority": 7,
+      "fallback_template": null,
+      "min_pitch_note": null,
+      "max_pitch_note": null,
+      "color_filter": null
+    },
+    {
+      "pattern_type": "VV",
+      "template": "{prev_vowel} {vowel}",
+      "enabled": true,
+      "priority": 6,
+      "fallback_template": "{vowel}",
+      "min_pitch_note": null,
+      "max_pitch_note": null,
+      "color_filter": null
+    },
+    {
+      "pattern_type": "CC",
+      "template": "{prev_consonant} {consonant}",
+      "enabled": true,
+      "priority": 5,
+      "fallback_template": null,
+      "min_pitch_note": null,
+      "max_pitch_note": null,
+      "color_filter": null
+    },
+    {
+      "pattern_type": "EndingVowelGlide",
+      "template": "{vowel} -",
+      "enabled": true,
+      "priority": 4,
+      "fallback_template": "{vowel} R",
+      "min_pitch_note": null,
+      "max_pitch_note": null,
+      "color_filter": null
+    },
+    {
+      "pattern_type": "EndingConsonantCoda",
+      "template": "{consonant} -",
+      "enabled": true,
+      "priority": 4,
+      "fallback_template": "{consonant}",
+      "min_pitch_note": null,
+      "max_pitch_note": null,
+      "color_filter": null
+    }
+  ],
+  "voice_color_and_pitch": {
+    "use_pitch_suffixes": true,
+    "pitch_suffixes": [
+      "_C3",
+      "_F3",
+      "_A3",
+      "_C4",
+      "_E4",
+      "_G4",
+      "_C5"
+    ],
+    "voice_colors": [
+      "",
+      "Power",
+      "Soft",
+      "Whisper",
+      "Falsetto",
+      "Clear"
+    ],
+    "fallback_to_default_color": true,
+    "auto_color_prefix_suffix": false,
+    "color_separator": "_",
+    "custom_resampler_flags": "",
+    "pitch_shift_steps": [
+      0,
+      12,
+      -12,
+      24,
+      -24
+    ]
+  },
+  "syllabification_config": {
+    "enable_cross_word_liaison": true,
+    "word_boundary_rest_threshold_ticks": 60,
+    "auto_detect_diphthongs": true,
+    "syllable_separator_chars": [
+      ".",
+      "-",
+      "_",
+      " "
+    ],
+    "allow_glottal_stop_insertion": true
+  },
+  "dictionary_overrides": [
+    {
+      "word": "você",
+      "phonemes": [
+        "v",
+        "o",
+        "s",
+        "ee"
+      ],
+      "is_case_sensitive": false,
+      "note_comment": null
+    },
+    {
+      "word": "também",
+      "phonemes": [
+        "t",
+        "an",
+        "b",
+        "en",
+        "i"
+      ],
+      "is_case_sensitive": false,
+      "note_comment": null
+    },
+    {
+      "word": "não",
+      "phonemes": [
+        "n",
+        "aon"
+      ],
+      "is_case_sensitive": false,
+      "note_comment": null
+    },
+    {
+      "word": "coração",
+      "phonemes": [
+        "k",
+        "o",
+        "rh",
+        "a",
+        "s",
+        "aon"
+      ],
+      "is_case_sensitive": false,
+      "note_comment": null
+    },
+    {
+      "word": "amor",
+      "phonemes": [
+        "a",
+        "m",
+        "o",
+        "r"
+      ],
+      "is_case_sensitive": false,
+      "note_comment": null
+    },
+    {
+      "word": "saudade",
+      "phonemes": [
+        "s",
+        "au",
+        "d",
+        "a",
+        "dj",
+        "i"
+      ],
+      "is_case_sensitive": false,
+      "note_comment": null
+    }
+  ],
+  "regex_rules": [
+    {
+      "name": "lh -> ly",
+      "pattern": "lh",
+      "replacement": "lh",
+      "enabled": true,
+      "order": 1
+    },
+    {
+      "name": "nh -> ny",
+      "pattern": "nh",
+      "replacement": "nh",
+      "enabled": true,
+      "order": 2
+    },
+    {
+      "name": "ch -> sh",
+      "pattern": "ch",
+      "replacement": "sh",
+      "enabled": true,
+      "order": 3
+    },
+    {
+      "name": "rr -> r",
+      "pattern": "rr",
+      "replacement": "r",
+      "enabled": true,
+      "order": 4
+    },
+    {
+      "name": "qu([ei]) -> k$1",
+      "pattern": "qu([ei])",
+      "replacement": "k$1",
+      "enabled": true,
+      "order": 5
+    },
+    {
+      "name": "gu([ei]) -> g$1",
+      "pattern": "gu([ei])",
+      "replacement": "g$1",
+      "enabled": true,
+      "order": 6
+    }
+  ],
+  "allow_fallback_cv": true,
+  "allow_fallback_vv": true,
+  "split_ratio_onset": 0.5,
+  "split_ratio_coda": 0.5,
+  "max_consonant_duration_ms": 120,
+  "raw_csharp_source": null,
+  "source_github_url": null,
+  "custom_usings": [
+    "using System;",
+    "using System.Collections.Generic;",
+    "using System.Linq;",
+    "using OpenUtau.Api;",
+    "using OpenUtau.Core.Ustx;"
+  ],
+  "custom_class_fields": "",
+  "custom_preprocess_code": "",
+  "custom_postprocess_code": "",
+  "custom_helper_methods": ""
+}
