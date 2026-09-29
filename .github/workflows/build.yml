@@ -1,0 +1,83 @@
+name: Build Phonemizer Studio
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build (${{ matrix.name }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Windows x64
+            os: windows-latest
+            artifact: phonemizer-studio-windows-x64
+            binary: target/release/phonemizer-studio.exe
+          - name: macOS Intel
+            os: macos-13
+            artifact: phonemizer-studio-macos-x64
+            binary: target/release/phonemizer-studio
+          - name: macOS Apple Silicon
+            os: macos-14
+            artifact: phonemizer-studio-macos-arm64
+            binary: target/release/phonemizer-studio
+          - name: Linux x64
+            os: ubuntu-24.04
+            artifact: phonemizer-studio-linux-x64
+            binary: target/release/phonemizer-studio
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Linux dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends \
+            libasound2-dev \
+            libdbus-1-dev \
+            libfontconfig1-dev \
+            libudev-dev \
+            libx11-dev \
+            libxcb1-dev \
+            libxkbcommon-dev \
+            libxkbcommon-x11-dev \
+            libwayland-dev \
+            pkg-config
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache Rust dependencies
+        uses: Swatinem/rust-cache@v2
+
+      - name: Build release binary
+        run: cargo build --release --locked
+
+      - name: Run tests
+        run: cargo test --locked
+
+      - name: Package binary
+        shell: bash
+        run: |
+          mkdir -p dist
+          cp "${{ matrix.binary }}" "dist/"
+          cp README.md dist/
+          cp LICENSE* dist/ 2>/dev/null || true
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact }}
+          path: dist/
+          if-no-files-found: error
+
